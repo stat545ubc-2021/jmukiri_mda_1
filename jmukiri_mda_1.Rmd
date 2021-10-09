@@ -1,0 +1,178 @@
+---
+title: "Mini Data-Analysis Deliverable 1 - Jessica Mukiri"
+author: "Jessica Mukiri"
+date: "06/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Mini Data-Analysis Deliverable 1
+
+This is my deliverable for the mini data analysis. My tasks are to:
+1. Choose favorite dataset (10 points)
+2. Explore chosen dataset (15 points)
+3. Write research questions (5 points)
+
+Before starting on this task, I first need to download and load the appropriate packages
+
+```{r }
+# Packages needed
+#install any of the loaded packages if not available e.g install.packages("devtools")
+#devtools::install_github("UBC-MDS/datateachr")
+
+library(datateachr)
+library(tidyverse)
+library(ggplot2)
+```
+
+# 1 Choosing favorite dataset
+
+## 1.1 Selecting four data sets
+
+The criteria for selecting the data sets:
+ a.No human related data
+ b.Include built environment (trees,rivers,buildings)
+ c.Be in Canada, a city, with a preference for Vancouver BC, then the rest of Canada
+ 
+Based on that criteria I was able to narrow my selection to the four data sets below. 
+
+*1.vancouver_trees*
+*2.parking_meters*
+*3.apt_buildings*
+*4.flow_sample*
+
+## 1.2 Exploring the 4 data sets 
+In this next step I want to have a better sense of how many columns and rows the data had and what kind of data is available. 
+
+```{r echo=FALSE}
+#dplyr function glimpse was used 
+
+glimpse(vancouver_trees)
+# this data has 146,611 data rows,and 20 columns.the biggest data set I have chosen, interesting to see the very detailed data on spps name, location, diameter.(date, numeric and string data)
+glimpse(flow_sample)
+#smallest of all the data sets chosen, only with 218 rows and 7 columns mostly (numeric and string)
+glimpse(parking_meters)
+#10,032 rows and 22 columns, numeric and string data. Information on the location, payment method collected
+glimpse(apt_buildings)
+#3455 rows, 37 columns, numeric and string data information on type of building, year built present 
+```
+## 1.3 Selecting two data sets. 
+Based on my initial criteria and having a look at the data I have narrowed my choices to:
+
+*1.vancouver_trees*
+*2.parking_meters*
+
+As a new comer to Vancouver analyzing this data, will give me a better understanding on Vancouver, where trees and parking meters are located and what access I have them, which neighborhoods. 
+
+```{r}
+#seeing the different neighborhoods that trees and parking meters are located 
+loc_tree <- vancouver_trees %>% 
+              group_by(neighbourhood_name)  %>% 
+              tally()  
+loc_tree
+
+loc_parkingm <- parking_meters  %>% 
+              group_by(geo_local_area)  %>% 
+              tally()  
+loc_parkingm
+```
+
+## 1.4 Selecting one data set
+
+*1.vancouver_trees*
+
+info on [vancouver_trees](https://opendata.vancouver.ca/explore/dataset/street-trees/information/?disjunctive.species_name&disjunctive.common_name&disjunctive.height_range_id)
+
+Vancouver is a very green city and during my first month here I have seen a lot of trees. As an environmentalist It would be interesting to explore what species of trees are planted and in which neighborhoods, how old the trees are, which years were trees planted and are there certain years more trees were planted. 
+
+# 2 Exploring vancouver_trees data set
+
+In this process I have delve into the data and have better understanding of what is available
+
+## 2.1a Plotting the distribution of tree diameter
+```{r}
+#Plotting the distribution of tree diameter
+
+# first I rename the Vancouver_trees data set to make it easier when running analysis 
+van_trees <- vancouver_trees
+
+#plotting a histogram
+hist_vant <- ggplot(van_trees, aes(x=diameter)) +
+  geom_histogram(bins = 30)
+
+hist_vant
+
+# the histogram has many extrems, I want to undestand my data a bit better to understand the range
+
+van_diam_summary <- summary(van_trees$diameter)
+
+van_diam_summary
+
+# the range is 0 -435 the mean is 11.49 and the 3rd quarter is  16.50, to visualize this, I will set my x lim to 25 to visualize the histogram again
+# doing this will removes a number of rows (13438) that do no fit the criteria but gives a better visualization of diameter of 90% of the trees in the city (13438/146611 * 100)
+
+hist_vant1 <- ggplot(van_trees, aes(x=diameter)) +
+  geom_histogram(bins = 15) +
+  xlim(0, 25)+
+  labs(title="Tree Diameter distribution 0-25 inches") +
+          ylab("frequency") +
+          xlab ("diameter in")+
+          theme_classic()
+
+
+hist_vant1
+
+```
+
+## 2.1b No of tree's per Genus
+
+Here I want to know what which species genus is the most popular in Vancouver? The relationship is between genus name and tree id.
+
+I first need to create a new data set with two variables.Counting the number of trees for each genus and then visualize with a bar plot
+
+```{r}
+
+notree_spps <- van_trees %>% 
+          group_by(genus_name) %>% 
+          tally() %>% 
+          arrange(desc(n))  %>% 
+          ggplot(aes(x= reorder(genus_name,n), y = n)) + 
+          geom_bar(stat = "identity")+
+          coord_flip() +
+          labs(title="Tree Genus with Most Trees") +
+          ylab("number of trees") +
+          xlab ("genus name") +
+          theme_classic()
+
+notree_spps
+
+#make sure to open graph in full screen for clarity
+```
+# 2.1c Columins with missing na's
+
+```{r}
+#which columns have missing na's
+van_tree_na <- van_trees %>% 
+  select_if(function(x) any(is.na(x))) %>% 
+  summarize_each(funs(sum(is.na(.)))) %>% 
+  pivot_longer(cols = contains("e"), names_to = "variable",     values_to = "count") %>% 
+  ggplot( aes(reorder(variable,count),count)) + 
+  geom_bar(stat = "identity")+
+  labs(title="Variables with missing NA values") +
+  ylab("Number of NAs") +
+  xlab ("Variable name") +
+  coord_flip() +
+  theme_bw()
+
+van_tree_na
+```
+
+# 3 Research questions? 
+
+1.? 
+2. ?
+3. ?
+4.  ?
