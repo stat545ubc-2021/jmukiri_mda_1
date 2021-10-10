@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Mini Data-Analysis Deliverable 1
 
 This is my deliverable for the mini data analysis. My tasks are to:
+
 1. Choose favorite dataset (10 points)
 2. Explore chosen dataset (15 points)
 3. Write research questions (5 points)
@@ -26,6 +27,7 @@ Before starting on this task, I first need to download and load the appropriate 
 library(datateachr)
 library(tidyverse)
 library(ggplot2)
+library(lubridate)
 ```
 
 # 1 Choosing favorite dataset
@@ -33,18 +35,23 @@ library(ggplot2)
 ## 1.1 Selecting four data sets
 
 The criteria for selecting the data sets:
- a.No human related data
- b.Include built environment (trees,rivers,buildings)
- c.Be in Canada, a city, with a preference for Vancouver BC, then the rest of Canada
- 
-Based on that criteria I was able to narrow my selection to the four data sets below. 
 
-*1.vancouver_trees*
-*2.parking_meters*
-*3.apt_buildings*
-*4.flow_sample*
+ a. No human related data
+ b. Include built environment (trees,rivers,buildings)
+ c. Be in Canada, a city, with a preference for Vancouver BC, then the rest of Canada
+ 
+Based on that criteria I was able to narrow my selection to the four data sets below: 
+
+__1. vancouver_trees__
+
+__2. parking_meters__
+
+__3. apt_buildings__
+
+**4. flow_sample**
 
 ## 1.2 Exploring the 4 data sets 
+
 In this next step I want to have a better sense of how many columns and rows the data had and what kind of data is available. 
 
 ```{r echo=FALSE}
@@ -62,8 +69,9 @@ glimpse(apt_buildings)
 ## 1.3 Selecting two data sets. 
 Based on my initial criteria and having a look at the data I have narrowed my choices to:
 
-*1.vancouver_trees*
-*2.parking_meters*
+**1.vancouver_trees**
+
+**2.parking_meters**
 
 As a new comer to Vancouver analyzing this data, will give me a better understanding on Vancouver, where trees and parking meters are located and what access I have them, which neighborhoods. 
 
@@ -82,19 +90,21 @@ loc_parkingm
 
 ## 1.4 Selecting one data set
 
-*1.vancouver_trees*
+**1.vancouver_trees**
 
 info on [vancouver_trees](https://opendata.vancouver.ca/explore/dataset/street-trees/information/?disjunctive.species_name&disjunctive.common_name&disjunctive.height_range_id)
 
-Vancouver is a very green city and during my first month here I have seen a lot of trees. As an environmentalist It would be interesting to explore what species of trees are planted and in which neighborhoods, how old the trees are, which years were trees planted and are there certain years more trees were planted. 
+Vancouver is a very green city and during my first month here I have seen a lot of trees. As an environmentalist it will be interesting to explore a number of questions such as what species of trees are planted,in which neighborhoods, how old the trees are, which years were trees planted and are there certain years more trees were planted?
 
 # 2 Exploring vancouver_trees data set
 
-In this process I have delve into the data and have better understanding of what is available
+In this process I have delve into the data and have better understanding of what is available.
 
 ## 2.1a Plotting the distribution of tree diameter
+
+This distribution will give me a sense of how wide the trees are in Vancouver.
+
 ```{r}
-#Plotting the distribution of tree diameter
 
 # first I rename the Vancouver_trees data set to make it easier when running analysis 
 van_trees <- vancouver_trees
@@ -105,13 +115,14 @@ hist_vant <- ggplot(van_trees, aes(x=diameter)) +
 
 hist_vant
 
-# the histogram has many extrems, I want to undestand my data a bit better to understand the range
+# the histogram has many extremes, I want to understand my data a bit better to understand the diameter range
 
 van_diam_summary <- summary(van_trees$diameter)
 
 van_diam_summary
 
 # the range is 0 -435 the mean is 11.49 and the 3rd quarter is  16.50, to visualize this, I will set my x lim to 25 to visualize the histogram again
+
 # doing this will removes a number of rows (13438) that do no fit the criteria but gives a better visualization of diameter of 90% of the trees in the city (13438/146611 * 100)
 
 hist_vant1 <- ggplot(van_trees, aes(x=diameter)) +
@@ -136,30 +147,33 @@ I first need to create a new data set with two variables.Counting the number of 
 ```{r}
 
 notree_spps <- van_trees %>% 
-          group_by(genus_name) %>% 
-          tally() %>% 
-          arrange(desc(n))  %>% 
-          ggplot(aes(x= reorder(genus_name,n), y = n)) + 
+          group_by(genus_name) %>%  #group data by genus name
+          tally() %>%  #count total by genus group
+          arrange(desc(n))  %>%  #rearrange data to see a clearer trend
+          ggplot(aes(x= reorder(genus_name,n), y = n)) +  #plot bar graph and ensure you reorder the reuslts
           geom_bar(stat = "identity")+
-          coord_flip() +
+          coord_flip() +  #makes it easier to visualize the data 
           labs(title="Tree Genus with Most Trees") +
           ylab("number of trees") +
           xlab ("genus name") +
           theme_classic()
 
+
 notree_spps
 
 #make sure to open graph in full screen for clarity
 ```
-# 2.1c Columins with missing na's
+Understanding the genus is key in identifying the appropriate selecting and monitoring trees. This exercise allows me to think about, is there a reason the ACER genus is mostly planted, is the tree native to Vancouver, is there more of a likely hood for survival? The data set does not have these answers but I am now curious to find out why?
+
+## 2.1c Columns with missing na's
 
 ```{r}
-#which columns have missing na's
+
 van_tree_na <- van_trees %>% 
-  select_if(function(x) any(is.na(x))) %>% 
-  summarize_each(funs(sum(is.na(.)))) %>% 
-  pivot_longer(cols = contains("e"), names_to = "variable",     values_to = "count") %>% 
-  ggplot( aes(reorder(variable,count),count)) + 
+                  summarise(across(everything(), 
+                   ~sum(is.na(.)))) %>%  #using acroos and everying and the summarize function to extract info needed
+  pivot_longer(cols = contains("e"), names_to = "variable",     values_to = "count")%>%  #transpose  data so it easier to plot with 
+  ggplot( aes(reorder(variable,count),count)) + #bar graph are a good way to visualize this data
   geom_bar(stat = "identity")+
   labs(title="Variables with missing NA values") +
   ylab("Number of NAs") +
@@ -168,11 +182,82 @@ van_tree_na <- van_trees %>%
   theme_bw()
 
 van_tree_na
+
+#to be able to select all the columns is used guidance from 
+#https://www.rebeccabarter.com/blog/2020-07-09-across/
 ```
+It is key for me to clean my data and see which key variables are missing for carrying out analysis. For instance if we don't know where the trees a planted (lat, long) or the date is was planted it becomes tricky to carry out specific analysis.
+
+## 2.1d Current Age of tree.
+
+This new variable will help me know how old the. the oldest tree is planted. Given the date the analysis is being carried out. 
+
+```{r}
+# created a new variable called age_tree using lubridate
+age_tree <- van_trees %>% 
+             mutate(age_tree =trunc(van_trees$date_planted %--%  (Sys.Date()) / years(1))) %>%  #lubridate for calculating age and trunc for rounding off see link at end of chunk
+      arrange(desc(age_tree)) # arranged age from olderst to youngest tree 
+
+age_tree
+
+summary(age_tree$age_tree) #to assess the max min and range of age of trees
+
+#plot a distrutbtion to visualize the data
+hist_age <- ggplot(age_tree, aes(x=age_tree)) +
+  geom_histogram(alpha = 0.2) +
+  labs(title="Age of Tree") +
+          ylab("frequency") +
+          xlab ("Age in years")+
+          theme_classic()
+
+hist_age
+
+# I used code from here to help with lubridate.
+#https://datacornering.com/how-to-calculate-age-in-r/
+```
+I can see from the data that there a years where more tress are planted and others where less are planted.
+The age variable will allow me to further explore if there are any  relationships between  age and genus planted or and  neighborhood planted, when carrying out further analysis. 
+
+## 2.1e Which genus has tree older than 10 years and diameter greater than 10 
+
+I did this as a bons question to test the use of filter, in this simple example I used a simple criteria to select which trees are older than 10 and have a diameter of ten
+
+
+```{r}
+tree_ten <- age_tree %>% 
+            group_by(genus_name) %>% 
+            filter(age_tree >= 10, diameter >=10)
+tree_ten
+```
+## 2.1f Boxplot 
+
+This again was additional as I was testing using boxplots
+
+```{r}
+
+#using geom_boxplox and geom_jitter to see the relationship between dimater and if the tree is planted on a curb.
+
+boxp_1 <- ggplot(age_tree, aes(x=curb, y = diameter, color = age_tree)) +
+  geom_boxplot()+
+  geom_jitter()
+
+boxp_1
+
+```
+From the data shown, trees planted by the curb have a higher diamter.
 
 # 3 Research questions? 
 
-1.? 
-2. ?
-3. ?
-4.  ?
+1. Is there any relationship between genus, tree diameter and height? 
+
+2. Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?
+
+3. Which year where most trees planted and where (curb,plant area,block)?
+
+4. Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years? 
+
+# Comments and questions to TA's
+
+* I was having difficulty with re-sizing labels for such a big data set, would it make sense not to use this kind of graph?
+
+* I also attempted additional questions just so that I can learn how to carry out such tasks
