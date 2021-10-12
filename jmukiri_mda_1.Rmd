@@ -2,7 +2,7 @@
 title: "Mini Data-Analysis Deliverable 1 - Jessica Mukiri"
 author: "Jessica Mukiri"
 date: "06/10/2021"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
