@@ -54,7 +54,7 @@ __3. apt_buildings__
 
 In this next step I want to have a better sense of how many columns and rows the data had and what kind of data is available. 
 
-```{r echo=FALSE}
+```{r echo=TRUE}
 #dplyr function glimpse was used 
 
 glimpse(vancouver_trees)
