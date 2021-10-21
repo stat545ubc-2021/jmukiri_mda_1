@@ -73,6 +73,12 @@ data sets below:
 In this next step I want to have a better sense of how many columns and
 rows the data had and what kind of data is available.
 
+``` r
+#dplyr function glimpse was used 
+
+glimpse(vancouver_trees)
+```
+
     ## Rows: 146,611
     ## Columns: 20
     ## $ tree_id            <dbl> 149556, 149563, 149579, 149590, 149604, 149616, 149…
@@ -96,6 +102,11 @@ rows the data had and what kind of data is available.
     ## $ longitude          <dbl> -123.1161, -123.1147, -123.0846, -123.0870, -123.08…
     ## $ latitude           <dbl> 49.21776, 49.21776, 49.23938, 49.23469, 49.23894, 4…
 
+``` r
+# this data has 146,611 data rows,and 20 columns.the biggest data set I have chosen, interesting to see the very detailed data on spps name, location, diameter.(date, numeric and string data)
+glimpse(flow_sample)
+```
+
     ## Rows: 218
     ## Columns: 7
     ## $ station_id   <chr> "05BB001", "05BB001", "05BB001", "05BB001", "05BB001", "0…
@@ -105,6 +116,11 @@ rows the data had and what kind of data is available.
     ## $ day          <dbl> 7, 12, 14, 25, 11, 18, 27, 20, 17, 15, 22, 3, 9, 5, 14, 5…
     ## $ flow         <dbl> 314, 230, 264, 174, 232, 214, 236, 309, 174, 345, 185, 24…
     ## $ sym          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+
+``` r
+#smallest of all the data sets chosen, only with 218 rows and 7 columns mostly (numeric and string)
+glimpse(parking_meters)
+```
 
     ## Rows: 10,032
     ## Columns: 22
@@ -130,6 +146,11 @@ rows the data had and what kind of data is available.
     ## $ latitude       <dbl> 49.28690, 49.27215, 49.25468, 49.26341, 49.26354, 49.27…
     ## $ geo_local_area <chr> "West End", "Strathcona", "Riley Park", "West Point Gre…
     ## $ meter_id       <chr> "670805", "471405", "C80145", "D03704", "301023", "5913…
+
+``` r
+#10,032 rows and 22 columns, numeric and string data. Information on the location, payment method collected
+glimpse(apt_buildings)
+```
 
     ## Rows: 3,455
     ## Columns: 37
@@ -170,6 +191,10 @@ rows the data had and what kind of data is available.
     ## $ facilities_available             <chr> "Recycling bins", "Green Bin / Organi…
     ## $ cooling_room                     <chr> "NO", "NO", "NO", "NO", "NO", "NO", "…
     ## $ no_barrier_free_accessible_units <dbl> 2, 0, 0, 42, 0, NA, 14, 0, 0, 1, 25, …
+
+``` r
+#3455 rows, 37 columns, numeric and string data information on type of building, year built present 
+```
 
 ## 1.3 Selecting two data sets.
 

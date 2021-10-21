@@ -1,5 +1,5 @@
 ---
-title: "Mini Data-Analysis Deliverable 1 - Jessica Mukiri"
+title: "Mini Data-Analysis Deliverable 2 - Jessica Mukiri"
 author: "Jessica Mukiri"
 date: "19/10/2021"
 output: github_document
@@ -44,7 +44,6 @@ suppressPackageStartupMessages(library(lubridate))
 
 ## 1.2 Summaries and Graphs
 
-## Summaries
 
 *Question 1.Is there any relationship between genus, tree diameter and height?*
 
@@ -64,18 +63,21 @@ q1_sum <- van_trees %>%
 q1_sum
 
 ```
- Create 3 histograms out of summarized variables, with each histogram having different sized bins
+
+Three  histograms  based out of summarized diameter means, with each histogram having different sized bins was used to answer question 1 above.
 
 ```{r}
 
-#for this 
+#this is a big data set,to ensure the graphs are visible I made sure the only genus with more than 2000 trees were visible
+
+# I dropped na's in the data, I also used the filter dplyr function and geom_histogram
 
 q1_graph <- q1_sum %>% 
             drop_na() %>% 
             filter( n >= 2000) %>% 
           ggplot(aes(x= mean , fill = genus_name))+
           geom_histogram(bins = 5)+
-          labs(title="Mean Diameter of Genus of trees that are more or eqaul to 2000") +
+          labs(title="Mean Diameter of Genus of trees that are more or equal to 2000") +
           ylab("frequency") +
           xlab ("Mean diameter")+
           theme_classic()
@@ -87,7 +89,7 @@ q2_graph <- q1_sum %>%
             filter( n >= 2000) %>% 
           ggplot(aes(x= max, fill = genus_name ))+
           geom_histogram(bins = 10)+
-          labs(title="Max Diameter of Genus of trees that are more or eqaul to 2000") +
+          labs(title="Max Diameter of Genus of trees that are more or equal to 2000") +
           ylab("frequency") +
           xlab ("Max Diamteter")+
           theme_classic()
@@ -100,17 +102,20 @@ q3_graph <- q1_sum %>%
             filter( n >= 2000) %>% 
           ggplot(aes(x= median, fill= genus_name))+
           geom_histogram(bins = 3) +
-          labs(title="Median Diameter of Genus of trees that are more or eqaul to 2000") +
+          labs(title="Median Diameter of Genus of trees that are more or equal to 2000") +
           ylab("frequency") +
           xlab ("Median diameter")+
           theme_classic()
 
 q3_graph
 ```
+The histogram with the title *Mean Diameter of Genus of trees that are more or equal to 2000* is the best as t histogram as it give a good overview of the mean diameter and the bins make the most sense in understanding the distribution.
+ 
  *2.Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?*
 
+For this question I computed he number of observations for at least one of how many trees of each genus are in specific neighborhoods
+
 ```{r}
-#Compute the number of observations for at least one of your categorical variables
 
 q2_sum <- van_trees %>% 
           group_by(genus_name,neighbourhood_name) %>% 
@@ -120,7 +125,13 @@ q2_sum <- van_trees %>%
 q2_sum
 ```
 
+
+Here I created a graph out of summarized variables that has at least two geom layers. I experimented with geom_point and geom_line .This graph does not answer the question however,allowed me to play around with the facet_wrap function 
+
+**question to the TA, how do I ensure that the legend does not over-ride the graph**
 ```{r}
+
+
 q6_graph <-van_trees %>% 
             drop_na() %>% 
              separate(col = date_planted, into = c("year","month","day"),sep="-")%>% 
@@ -136,6 +147,8 @@ q6_graph
 
 *3.Which year where most trees planted and where (curb,plant area,block)?*
 
+The summary allows me to understand which year how many trees were planted and if this was on a curb or not.
+
 ```{r}
 #Based on two categorical variables, calculate two summary statistics of your choosing
 q3_sum <- van_trees %>% 
@@ -148,7 +161,7 @@ q3_sum <- van_trees %>%
 q3_sum
 ```
 
- Create a graph of your choosing, make one of the axes logarithmic, and format the axes labels so that they are "pretty" or easier to read.
+I created a geom_area map and changed the alpa transparency so it is more visible. This graph shows a good overview of the genus of species grown over the years.The alpha transpercy ensure we can see overlaps
 
 ```{r}
 q4_graph <- van_trees %>% 
@@ -161,7 +174,7 @@ q4_graph <- van_trees %>%
           summarise(n = n()) %>% 
           mutate( percentage = n/sum(n)) %>% 
            ggplot(aes(x= year, y= percentage, fill = genus_name))+
-          geom_area(aplha = 0.6, size = 1, color = "black") +
+          geom_area(aplha = 0.01, size = 1) +
            theme_classic()
           
          
@@ -170,10 +183,12 @@ q4_graph
 
 *4.Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years?*
 
+Here I created a categorical variable called age_tree with four groups from a numerical variable I created
 ```{r}
-#Create a categorical variable with 3 or more groups from an existing numerical variable
+
 q4_sum <- van_trees %>% 
-             mutate(age_tree =trunc(van_trees$date_planted %--%  (Sys.Date()) / years(1))) %>%  #lubridate for calculating age and trunc for rounding off see link at end of chunk
+             mutate(age_tree =trunc(van_trees$date_planted %--%  (Sys.Date()) / years(1))) %>%  
+  #lubridate for calculating age and trunc for rounding off see link at end of chunk
            arrange(desc(age_tree)) %>% # arranged age from oldest to youngest tree 
            mutate(age_tree = case_when( age_tree < 10 ~ "young",
                                  age_tree < 20 ~ "middle age",
@@ -185,7 +200,11 @@ q4_sum <- van_trees %>%
 
 q4_sum
 ```
+I can see most of the trees are older than 30 showing that tree planting exercises have somewhat reduced
 
+Here I created  graph of your choosing, make one of the axes logarithmic, and format the axes labels so that they are "pretty" or easier to read.
+
+Again **question to the TA, how do I ensure that the legend does not over-ride the graph**. Also was not sure where else to use the logarthimic axes based on my questions.
 ```{r}
 q7_graph <- van_trees %>% 
             drop_na() %>% 
@@ -201,17 +220,17 @@ q7_graph
 
 ## 1.3 
 
-For this questions, doing the summaries brought me closer to answering the question, I had laid out. The graphs not so much as as the data I am working with does not have numeric variables to be calculated making the graphing questions together with my questions difficult to graph.However, I did see some intersting results on the graph.
+For this questions, doing the summaries brought me closer to answering the question, I had laid out. The graphs not so much as as the data I am working with does not have numeric variables to be calculated making the graphing questions together with my questions difficult to graph.However, I did see some interesting results on the graphs and looking forward to answer these is milestone 3.
 
-Moving forward I would focus more on question one, three and four are intersting and showing some intersting results
+Moving forward I would focus more on question two and four are interesting and showing some interesting results
 
 # 2 Tidy data vancouver trees data
 
-### 2.1 
+### 2.1 Van_trees Tidy Data
 
 The van_trees data set is tidy as each column is it's own variable, each row as an individual observation and each cell has only one value. Fitting the criteria for tidy data
 
-### 2.2
+### 2.2 Untidying_Van_trees
 Making the vantress data untidy, here I am changing the data into a wider format. 
 ```{r}
 
@@ -230,4 +249,20 @@ tidy_data <- untidy_data %>%
   
 tidy_data  
 ```
-### 2.3
+### 2.3 Picking Question
+
+*2. Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?*
+
+*4. Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years?*
+
+I choose these two questions as they are very interesting and will also allow me to explore some geom layers such as geom_map together with making summaries. For this last assignment the tibble I will use can be seen below
+
+```{r}
+#cleaning data, separating , creating  and selecting only columns I will use)
+mda3_t <- van_trees %>% 
+                drop_na() %>% 
+                separate(col = date_planted, into = c("year","month","day"),sep="-")%>% 
+                mutate(year = as.numeric(year))%>%   select(tree_id,genus_name,species_name,longitude,latitude,neighbourhood_name,year)
+mda3_t 
+```
+
