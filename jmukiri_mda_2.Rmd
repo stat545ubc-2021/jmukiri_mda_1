@@ -42,9 +42,13 @@ suppressPackageStartupMessages(library(lubridate))
 4. Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years? 
 
 
-### 1.2 
+## 1.2 Summaries and Graphs
+
+## Summaries
 
 *Question 1.Is there any relationship between genus, tree diameter and height?*
+
+For this first question am computing he *range*, *mean*, and *median* & *standard deviation" of **diameter** across the groups the **genus group** from vancouver trees data.
 
 ```{r}
 # first I rename the Vancouver_trees data set to make it easier when running analysis 
@@ -55,15 +59,55 @@ van_trees <- vancouver_trees
 q1_sum <- van_trees %>% 
           select(genus_name,height_range_id,diameter) %>% 
           group_by(genus_name) %>% 
-          summarise(mean = mean(diameter), n= n(), max = max(diameter), min = min(diameter))
+          summarise(mean = mean(diameter), n= n(), max = max(diameter), min = min(diameter), median = median(diameter), sd = sd(diameter))
+
+q1_sum
 
 ```
+ Create 3 histograms out of summarized variables, with each histogram having different sized bins
 
 ```{r}
-q1_graph <- 
-```
 
-*2.Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?*
+#for this 
+
+q1_graph <- q1_sum %>% 
+            drop_na() %>% 
+            filter( n >= 2000) %>% 
+          ggplot(aes(x= mean , fill = genus_name))+
+          geom_histogram(bins = 5)+
+          labs(title="Mean Diameter of Genus of trees that are more or eqaul to 2000") +
+          ylab("frequency") +
+          xlab ("Mean diameter")+
+          theme_classic()
+
+q1_graph
+
+q2_graph <- q1_sum %>% 
+            drop_na() %>% 
+            filter( n >= 2000) %>% 
+          ggplot(aes(x= max, fill = genus_name ))+
+          geom_histogram(bins = 10)+
+          labs(title="Max Diameter of Genus of trees that are more or eqaul to 2000") +
+          ylab("frequency") +
+          xlab ("Max Diamteter")+
+          theme_classic()
+
+q2_graph
+
+
+q3_graph <- q1_sum %>% 
+            drop_na() %>% 
+            filter( n >= 2000) %>% 
+          ggplot(aes(x= median, fill= genus_name))+
+          geom_histogram(bins = 3) +
+          labs(title="Median Diameter of Genus of trees that are more or eqaul to 2000") +
+          ylab("frequency") +
+          xlab ("Median diameter")+
+          theme_classic()
+
+q3_graph
+```
+ *2.Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?*
 
 ```{r}
 #Compute the number of observations for at least one of your categorical variables
@@ -72,10 +116,22 @@ q2_sum <- van_trees %>%
           group_by(genus_name,neighbourhood_name) %>% 
           summarise(n= n()) %>% 
           arrange(desc(n))
+
+q2_sum
 ```
 
 ```{r}
-q2_graph <-
+q6_graph <-van_trees %>% 
+            drop_na() %>% 
+             separate(col = date_planted, into = c("year","month","day"),sep="-")%>% 
+             mutate(year = as.numeric(year)) %>% 
+              ggplot(aes(x= year, y= diameter, color = neighbourhood_name))+
+              geom_point() + 
+              geom_line() +
+              facet_wrap(~ genus_name)
+
+
+q6_graph
 ```
 
 *3.Which year where most trees planted and where (curb,plant area,block)?*
@@ -89,10 +145,27 @@ q3_sum <- van_trees %>%
           mutate(year = as.numeric(year)) %>% 
           group_by(year,curb) %>% 
           summarise(n= n(), max = max(n))
+q3_sum
 ```
 
+ Create a graph of your choosing, make one of the axes logarithmic, and format the axes labels so that they are "pretty" or easier to read.
+
 ```{r}
-q3_graph <-
+q4_graph <- van_trees %>% 
+            drop_na() %>% 
+             separate(col = date_planted, into = c("year","month","day"),sep="-") %>% 
+             mutate(year = as.numeric(year),
+                    genus_name = as.factor(genus_name)) %>% 
+           arrange(desc(year)) %>% # arranged age from oldest to youngest tree 
+          group_by(year,genus_name) %>% 
+          summarise(n = n()) %>% 
+          mutate( percentage = n/sum(n)) %>% 
+           ggplot(aes(x= year, y= percentage, fill = genus_name))+
+          geom_area(aplha = 0.6, size = 1, color = "black") +
+           theme_classic()
+          
+         
+q4_graph
 ```
 
 *4.Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years?*
@@ -109,22 +182,52 @@ q4_sum <- van_trees %>%
           group_by(age_tree) %>% 
           summarise(n = n()) %>% 
           arrange(desc(n))
+
+q4_sum
 ```
 
 ```{r}
-q4_graph <- 
+q7_graph <- van_trees %>% 
+            drop_na() %>% 
+           ggplot(aes(x=longitude, y= latitude ,color = neighbourhood_name ))+
+           geom_point(alpha = 0.05)+ 
+          scale_y_log10() 
+
+
+
+q7_graph
 ```
 
 
-### 1.3 
+## 1.3 
 
+For this questions, doing the summaries brought me closer to answering the question, I had laid out. The graphs not so much as as the data I am working with does not have numeric variables to be calculated making the graphing questions together with my questions difficult to graph.However, I did see some intersting results on the graph.
+
+Moving forward I would focus more on question one, three and four are intersting and showing some intersting results
 
 # 2 Tidy data vancouver trees data
 
 ### 2.1 
 
+The van_trees data set is tidy as each column is it's own variable, each row as an individual observation and each cell has only one value. Fitting the criteria for tidy data
 
 ### 2.2
+Making the vantress data untidy, here I am changing the data into a wider format. 
+```{r}
 
+untidy_data <- van_trees %>% 
+            drop_na() %>% 
+            pivot_wider(names_from = species_name, values_from = diameter, values_fill = 0)
 
+untidy_data
+```
+Each species is now its own individual column with its diameter.
+
+In this next section I transform the data from untidy to tidy using the pivot longer function.Where the species is now associated witha genus and the diameter is also it's own column
+```{r}
+tidy_data <- untidy_data %>% 
+            pivot_longer(col = 19:107,names_to = "species_name", values_to =  "diameter")
+  
+tidy_data  
+```
 ### 2.3
