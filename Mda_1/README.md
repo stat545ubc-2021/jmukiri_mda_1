@@ -1,11 +1,13 @@
 # Mini Data Analysis
 
 ## Overview
-This is a mini data analysis project for UBC course *[STAT 545A](https://stat545.stat.ubc.ca/syllabus-545a/)*. 
+This is a mini data analysis series project for UBC course *[STAT 545A](https://stat545.stat.ubc.ca/syllabus-545a/)*. 
 
-The objective is to learn how to work with data, cleaning it using key R functions; `tidyverse` & `ggplot2` together with data from`datateachr`. 
+The objective is to learn how to work with data, cleaning,vizualizing, modelling and saving data using key R functions; `tidyverse` & `ggplot2` together with data from`datateachr`. 
 
-- [x] Mini data analysis 1
+This was a series of 3 analysis which constituted of:
+
+- [x] Mini data analysis 1: wriing and exploring a data set.
   * Choose favorite data set 
   * Explore chosen data set`
   * Write research questions
@@ -18,11 +20,10 @@ The objective is to learn how to work with data, cleaning it using key R functio
   * updated `README.md`
   * Created a release for this milestone 
 
-## Project Files
-* *jmukiri_mda_1.Rmd*: The Rmarkdown file where the mini data analysis has been carried out.
-* *jmukiri_mda_2.Rmd*: The Rmarkdown file where the mini data analysis has been carried out.
-* *jmukiri_mda_1.md* : markdown greated in R from knitting
-* *jmukiri_mda_2.md* : markdown greated in R from knitting
+## Project Folder/Files
+* *Mda_1*: The Rmarkdown file where the mini data analysis has been carried out.
+* *Mda_2*: The Rmarkdown file where the mini data analysis has been carried out.
+* *Mda_3* : markdown greated in R from knitting
 * *jmukiri_mda_1_files* : knitted folder
 * *jmukiri_mda_2_files* : knitted folder
 * *README.md* : read me file for this repo
