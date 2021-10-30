@@ -415,16 +415,16 @@ age_tree
     ## # A tibble: 146,611 × 21
     ##    tree_id civic_number std_street   genus_name species_name cultivar_name
     ##      <dbl>        <dbl> <chr>        <chr>      <chr>        <chr>        
-    ##  1   31395         2105 W 32ND AV    TILIA      CORDATA      <NA>         
-    ##  2   31396         2105 W 32ND AV    TILIA      CORDATA      <NA>         
-    ##  3   34719         3408 W 36TH AV    TILIA      EUCHLORA   X <NA>         
-    ##  4   59867         5715 BERKELEY ST  PRUNUS     SERRULATA    KWANZAN      
-    ##  5   62833         1203 BROUGHTON ST ACER       RUBRUM       RED SUNSET   
-    ##  6   68625         7520 COLUMBIA ST  ACER       RUBRUM       <NA>         
-    ##  7   68629         7580 COLUMBIA ST  ACER       RUBRUM       <NA>         
-    ##  8   68630         7620 COLUMBIA ST  ACER       RUBRUM       <NA>         
-    ##  9   68631         7620 COLUMBIA ST  ACER       RUBRUM       <NA>         
-    ## 10   68632         7620 COLUMBIA ST  ACER       RUBRUM       <NA>         
+    ##  1  122127          412 E 46TH AV    TILIA      CORDATA      <NA>         
+    ##  2  122130          434 E 46TH AV    TILIA      CORDATA      <NA>         
+    ##  3   31395         2105 W 32ND AV    TILIA      CORDATA      <NA>         
+    ##  4   31396         2105 W 32ND AV    TILIA      CORDATA      <NA>         
+    ##  5   34719         3408 W 36TH AV    TILIA      EUCHLORA   X <NA>         
+    ##  6   59867         5715 BERKELEY ST  PRUNUS     SERRULATA    KWANZAN      
+    ##  7   62833         1203 BROUGHTON ST ACER       RUBRUM       RED SUNSET   
+    ##  8   68625         7520 COLUMBIA ST  ACER       RUBRUM       <NA>         
+    ##  9   68629         7580 COLUMBIA ST  ACER       RUBRUM       <NA>         
+    ## 10   68630         7620 COLUMBIA ST  ACER       RUBRUM       <NA>         
     ## # … with 146,601 more rows, and 15 more variables: common_name <chr>,
     ## #   assigned <chr>, root_barrier <chr>, plant_area <chr>,
     ## #   on_street_block <dbl>, on_street <chr>, neighbourhood_name <chr>,
@@ -436,7 +436,7 @@ summary(age_tree$age_tree) #to assess the max min and range of age of trees
 ```
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-    ##    2.00   11.00   17.00   16.81   23.00   31.00   76548
+    ##    2.00   11.00   17.00   16.84   23.00   32.00   76548
 
 ``` r
 #plot a distrutbtion to visualize the data
@@ -479,21 +479,21 @@ tree_ten <- age_tree %>%
 tree_ten
 ```
 
-    ## # A tibble: 9,770 × 21
+    ## # A tibble: 9,771 × 21
     ## # Groups:   genus_name [63]
     ##    tree_id civic_number std_street  genus_name species_name cultivar_name
     ##      <dbl>        <dbl> <chr>       <chr>      <chr>        <chr>        
-    ##  1   31395         2105 W 32ND AV   TILIA      CORDATA      <NA>         
-    ##  2   31396         2105 W 32ND AV   TILIA      CORDATA      <NA>         
-    ##  3   34719         3408 W 36TH AV   TILIA      EUCHLORA   X <NA>         
-    ##  4   59867         5715 BERKELEY ST PRUNUS     SERRULATA    KWANZAN      
-    ##  5   68625         7520 COLUMBIA ST ACER       RUBRUM       <NA>         
-    ##  6   68629         7580 COLUMBIA ST ACER       RUBRUM       <NA>         
-    ##  7   68630         7620 COLUMBIA ST ACER       RUBRUM       <NA>         
-    ##  8   68631         7620 COLUMBIA ST ACER       RUBRUM       <NA>         
-    ##  9   68632         7620 COLUMBIA ST ACER       RUBRUM       <NA>         
-    ## 10   70367         4199 W 15TH AV   PRUNUS     SERRULATA    KWANZAN      
-    ## # … with 9,760 more rows, and 15 more variables: common_name <chr>,
+    ##  1  122127          412 E 46TH AV   TILIA      CORDATA      <NA>         
+    ##  2  122130          434 E 46TH AV   TILIA      CORDATA      <NA>         
+    ##  3   31395         2105 W 32ND AV   TILIA      CORDATA      <NA>         
+    ##  4   31396         2105 W 32ND AV   TILIA      CORDATA      <NA>         
+    ##  5   34719         3408 W 36TH AV   TILIA      EUCHLORA   X <NA>         
+    ##  6   59867         5715 BERKELEY ST PRUNUS     SERRULATA    KWANZAN      
+    ##  7   68625         7520 COLUMBIA ST ACER       RUBRUM       <NA>         
+    ##  8   68629         7580 COLUMBIA ST ACER       RUBRUM       <NA>         
+    ##  9   68630         7620 COLUMBIA ST ACER       RUBRUM       <NA>         
+    ## 10   68631         7620 COLUMBIA ST ACER       RUBRUM       <NA>         
+    ## # … with 9,761 more rows, and 15 more variables: common_name <chr>,
     ## #   assigned <chr>, root_barrier <chr>, plant_area <chr>,
     ## #   on_street_block <dbl>, on_street <chr>, neighbourhood_name <chr>,
     ## #   street_side_name <chr>, height_range_id <dbl>, diameter <dbl>, curb <chr>,
