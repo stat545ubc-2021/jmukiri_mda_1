@@ -298,10 +298,10 @@ q4_sum
     ## # A tibble: 4 × 2
     ##   age_tree       n
     ##   <chr>      <int>
-    ## 1 very old   78237
-    ## 2 middle age 27852
-    ## 3 old        26120
-    ## 4 young      14402
+    ## 1 very old   78242
+    ## 2 middle age 27913
+    ## 3 old        26169
+    ## 4 young      14287
 
 I can see most of the trees are older than 30 showing that tree planting
 exercises have somewhat reduced

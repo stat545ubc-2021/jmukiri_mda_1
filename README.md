@@ -3,7 +3,7 @@
 ## Overview
 This is a mini data analysis series project for UBC course *[STAT 545A](https://stat545.stat.ubc.ca/syllabus-545a/)*. 
 
-The objective is to learn how to work with data, cleaning,vizualizing, modelling and saving data using key R functions; `tidyverse` & `ggplot2` together with data from`datateachr`. 
+The objective is to learn how to work with data, cleaning,visualizing, modelling and saving data using key R functions; `tidyverse` & `ggplot2` together with data from`datateachr`. 
 
 This was a series of 3 analysis which constituted of:
 
