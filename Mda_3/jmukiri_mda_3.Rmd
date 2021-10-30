@@ -29,6 +29,7 @@ suppressPackageStartupMessages(library(datateachr))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(lubridate))
+
 ```
 
 # Research Questions
@@ -38,13 +39,92 @@ suppressPackageStartupMessages(library(lubridate))
 2. Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years?
 
 
-
 # 1  Special Data Types
 
+## Task: 1 Reorder factor
+
+```{r}
+## data set I am going to use
+mda3_t <- vancouver_trees %>% 
+                drop_na() %>% 
+                separate(col = date_planted, into = c("year","month","day"),sep="-")%>% 
+                mutate(year = as.numeric(year))%>%   select(tree_id,genus_name,species_name,longitude,latitude,neighbourhood_name,year)
+mda3_t 
+
+notree_spps <- mda3_t %>% 
+          group_by(genus_name) %>%  #group data by genus name
+          tally() %>%  #count total by genus group
+          arrange(desc(n))  %>%  #rearrange data to see a clearer trend
+          filter( n > 100) %>% 
+          ggplot(aes(x= fct_reorder(genus_name,n), y = n)) +  #plot bar graph and ensure you reorder the results
+          geom_bar(stat = "identity")+
+          coord_flip() +  #makes it easier to visualize the data 
+          labs(title="Tree Genus with over 100 Trees") +
+          ylab("number of trees") +
+          xlab ("genus name") +
+          theme_classic()
 
 
+notree_spps
+
+```
+This re ordring allows me to see exactly genus species is the most. The reordering  allows me to see how this is from highest to lowest. 
+
+## Task: 3 Lubridate
+
+```{r}
+#using the lubridate data set to
+van_tb <- vancouver_trees %>%
+  mutate(yr = year(vancouver_trees$date_planted),
+         mt = month(vancouver_trees$date_planted),
+          dy = day(vancouver_trees$date_planted),
+         day_year = yday(vancouver_trees$date_planted))
+
+van_tb
+```
+For this task, I wanted to seperate the year month and day, I also went further to find out exactly which day of the year the trees were planted. This information can be useful to see which days and which months does tree planting occur. In future adding weather data it one could see if rainfall patterns drought influenced if more or less trees were planted (if one has daily rainfall data they can use the day column, if one as only monthly averages they can use the month column). 
+
+# 2  Modelling
+
+*Research Question*: Fitting the tree diameter based on date planted for Genus ACER linear regression 
+
+*Variable of interest*: Tree diameter Y, Year X
+
+## 2.1 Fitting a model
+
+```{r}
+van_tba <- van_tb %>% 
+            filter( genus_name == "ACER")
+
+lm_1 <-lm(diameter~ yr,van_tba)
+
+lm_1
+```
+
+## 2.2 Model results
+
+```{r}
+lm_2 <- lm(diameter ~ I(yr-1999), data = van_tba)
+
+lm_2 <- broom::glance(lm_2)
+
+lm_2
+```
 
 
+# 3  Reading and writing data
 
+## 3.1 Write a csv
+
+```{r}
+
+```
+
+
+## 3.2 Write a RDS
+
+```{r}
+
+```
 
 
