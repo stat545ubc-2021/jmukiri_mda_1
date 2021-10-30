@@ -13,8 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is my deliverable for the mini data analysis. My tasks are to:
 
-1. Process and summarize your data (15 points)
-2. Tidy your data (12.5 points)
+1. Special Data Types (10 points)
+2. Modelling (10 points)
+3. Reading and Writing data (10 points)
+4. Tidy Repository (10 points)
 
 Before starting on this task, I first need to download and load the appropriate packages
 
@@ -29,4 +31,18 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(lubridate))
 ```
 
+# Research Questions
+
+
+
+
+
 # 1  Process and summarize of vancouver trees data
+
+
+
+
+
+
+
+
