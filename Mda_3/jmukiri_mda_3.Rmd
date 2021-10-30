@@ -1,0 +1,32 @@
+---
+title: "Mini Data-Analysis Deliverable 2 - Jessica Mukiri"
+author: "Jessica Mukiri"
+date: "29/10/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Mini Data-Analysis Deliverable 3
+
+This is my deliverable for the mini data analysis. My tasks are to:
+
+1. Process and summarize your data (15 points)
+2. Tidy your data (12.5 points)
+
+Before starting on this task, I first need to download and load the appropriate packages
+
+```{r }
+# Packages needed
+#install any of the loaded packages if not available e.g install.packages("devtools")
+#devtools::install_github("UBC-MDS/datateachr")
+
+suppressPackageStartupMessages(library(datateachr))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(lubridate))
+```
+
+# 1  Process and summarize of vancouver trees data
