@@ -33,11 +33,13 @@ suppressPackageStartupMessages(library(lubridate))
 
 # Research Questions
 
+1. Which neighborhood has the most trees, and what genus and species are found in these neighborhoods?
+
+2. Are the oldest trees planted, dependent on a neighborhood,. Has the distribution of genus and spps changed over the last 30 years?
 
 
 
-
-# 1  Process and summarize of vancouver trees data
+# 1  Special Data Types
 
 
 

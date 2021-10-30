@@ -20,8 +20,9 @@ This was a series of 3 analysis which constituted of:
   * updated `README.md`
   
 - [x] Mini data analysis 3
-  * Process and summarize your data 
-  * Tidy your data
+  * Special Data Types 
+  * Modelling
+  * Reading and Writing data
   * updated `README.md`
 
 ## Project Folder/Files
