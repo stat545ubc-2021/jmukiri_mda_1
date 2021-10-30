@@ -29,7 +29,7 @@ suppressPackageStartupMessages(library(datateachr))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(lubridate))
-
+suppressPackageStartupMessages(library(here))
 ```
 
 # Research Questions
@@ -118,6 +118,14 @@ lm_2
 
 ```{r}
 
+q1_sum <- van_tba %>% 
+          select(genus_name,height_range_id,diameter) %>% 
+          group_by(genus_name) %>% 
+          summarise(mean = mean(diameter), n= n(), max = max(diameter), min = min(diameter), median = median(diameter), sd = sd(diameter))
+
+
+write_csv(q1_sum, here::here("output","exported_file.csv"))
+
 ```
 
 
@@ -125,6 +133,10 @@ lm_2
 
 ```{r}
 
+
+saveRDS(lm_1, here::here("output","model.RDS") ) 
+
+readRDS( here::here("output","model.RDS"))
 ```
 
 
